@@ -12,10 +12,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private int _jumpCount;
+    private EchoEffects _echoEffects;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _echoEffects = GetComponent<EchoEffects>();
+        
         _jumpCount = 0;
     }
 
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
         if (CanJump() && CheckJumpInput())
         {
             Jump();
+            _echoEffects.CanShowEcho(true);
         }
     }
 
