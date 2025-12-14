@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private int _jumpCount;
     private EchoEffects _echoEffects;
+    private bool _isGrounded;
 
     private void Awake()
     {
@@ -49,11 +50,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision2D)
     {
-        if (collision2D.collider.CompareTag(GlobalConstants.FLOOR_TAG))
+        if (collision2D.collider.CompareTag(GlobalConstants.FLOOR_TAG) && !_isGrounded)
         {
             _landingAudio.Play();
             _jumpCount = _maxJumpCount;
+            _isGrounded = true;
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision2D)
+    {
+        _isGrounded = false;
     }
 
     private bool CanJump()
