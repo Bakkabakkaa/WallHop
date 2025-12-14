@@ -6,17 +6,22 @@ using TouchPhase = UnityEngine.TouchPhase;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
+    [SerializeField] private int _maxJumpCount = 2;
+    [SerializeField] private AudioSource _moveAudio;
+    [SerializeField] private AudioSource _landingAudio;
 
     private Rigidbody2D _rigidbody2D;
+    private int _jumpCount;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _jumpCount = 0;
     }
 
     private void Update()
     {
-        if (CheckJumpInput())
+        if (CanJump() && CheckJumpInput())
         {
             Jump();
         }
@@ -24,7 +29,9 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        _moveAudio.Play();
         _rigidbody2D.linearVelocity = Vector2.up * (_jumpForce * _rigidbody2D.gravityScale);
+        _jumpCount--;
     }
 
     private bool CheckJumpInput()
@@ -34,5 +41,19 @@ public class PlayerController : MonoBehaviour
                               && Input.GetTouch(0).phase == TouchPhase.Began;
 
         return isSpaceButton || isTouchingInput;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision2D)
+    {
+        if (collision2D.collider.CompareTag(GlobalConstants.FLOOR_TAG))
+        {
+            _landingAudio.Play();
+            _jumpCount = _maxJumpCount;
+        }
+    }
+
+    private bool CanJump()
+    {
+        return _jumpCount > 0;
     }
 }
