@@ -67,4 +67,9 @@ public class PlayerController : MonoBehaviour
     {
         return _jumpCount > 0;
     }
+
+    public void DestroyPlayer()
+    {
+        Destroy(gameObject);
+    }
 }
