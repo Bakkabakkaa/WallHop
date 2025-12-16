@@ -9,6 +9,8 @@ public class ObstacleController : MonoBehaviour
 {
     private const int COUNT_INITIAL_OBSTACLES = 10;
 
+    public event Action<Vector3> ObstacleChangedPosition; 
+
     [SerializeField] private Obstacle _obstaclePrefab;
     [SerializeField] private float _minDistanceBetweenObstaclesX = 5.0f;
     [SerializeField] private float _maxDistanceBetweenObstaclesX = 9.0f;
@@ -60,6 +62,12 @@ public class ObstacleController : MonoBehaviour
         var previousPosition = GetPreviousPosition(previousObstacle);
         var nextRandomPosition = GetNextRandomPosition(previousPosition);
         obstacle.transform.position = nextRandomPosition;
+
+        if (_obstacles.Count > 1)
+        {
+            var positionBetweenObstacle = (previousPosition + obstacle.transform.position) / 2;
+            ObstacleChangedPosition.Invoke(positionBetweenObstacle);
+        }
     }
 
     private Vector3 GetPreviousPosition(Obstacle previousObstacle)
