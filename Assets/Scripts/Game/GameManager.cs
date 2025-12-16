@@ -9,19 +9,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ObstacleController _obstacleController;
     [SerializeField] private PlayerController _player;
     [SerializeField] private LevelMover _levelMover;
+    [SerializeField] private ScoreController _scoreController;
+    [SerializeField] private ScoreView _scoreView;
 
     private void Awake()
     {
         _obstacleController.ObstacleChangedPosition += OnObstacleChangePosition;
-        _pointController.RewardAdded += OnRewardAdded;
+        _pointController.RewardAdded += _scoreController.AddScore;
         _player.PlayerDied += OnPlayerDied;
+        _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
     }
 
     private void OnDestroy()
     {
         _obstacleController.ObstacleChangedPosition -= OnObstacleChangePosition;
-        _pointController.RewardAdded -= OnRewardAdded;
+        _pointController.RewardAdded -= _scoreController.AddScore;
         _player.PlayerDied -= OnPlayerDied;
+        _scoreController.ScoreChanged -= _scoreView.UpdateScoreLabel;
     }
 
     private void OnObstacleChangePosition(Vector3 position)
@@ -33,12 +37,6 @@ public class GameManager : MonoBehaviour
             _pointController.SpawnPoint(position);
         }
     }
-
-    private void OnRewardAdded(int rewardPerPoint)
-    {
-        Debug.Log(rewardPerPoint);
-    }
-
     private void OnPlayerDied()
     {
         _levelMover.enabled = false;
@@ -46,3 +44,5 @@ public class GameManager : MonoBehaviour
         _pointController.DestroAllPoints();
     }
 }
+
+
