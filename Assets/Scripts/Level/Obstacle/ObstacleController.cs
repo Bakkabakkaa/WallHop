@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -9,9 +10,10 @@ public class ObstacleController : MonoBehaviour
 {
     private const int COUNT_INITIAL_OBSTACLES = 10;
 
-    public event Action<Vector3> ObstacleChangedPosition; 
+    public event Action<Vector3> ObstacleChangedPosition;
 
     [SerializeField] private Obstacle _obstaclePrefab;
+    [SerializeField] private float _destroyObstacleDuration = 0.3f;
     [SerializeField] private float _minDistanceBetweenObstaclesX = 5.0f;
     [SerializeField] private float _maxDistanceBetweenObstaclesX = 9.0f;
     [SerializeField] private float _minObstacleHeight = 1.2f;
@@ -20,6 +22,19 @@ public class ObstacleController : MonoBehaviour
     [SerializeField] private float _maxObstaclePositionY = -2.5f;
 
     private readonly Queue<Obstacle> _obstacles = new Queue<Obstacle>();
+
+    public void DestroyObstacles()
+    {
+        while (_obstacles.Count > 0)
+        {
+            var obstacle = _obstacles.Dequeue();
+            obstacle.PlayerPassedObstacle -= OnPlayerPassed;
+            obstacle.transform
+                .DOScale(0f, _destroyObstacleDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => Destroy(obstacle.gameObject));
+        }
+    }
 
     private void Start()
     {

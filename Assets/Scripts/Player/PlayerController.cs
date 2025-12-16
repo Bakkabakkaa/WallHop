@@ -5,6 +5,9 @@ using TouchPhase = UnityEngine.TouchPhase;
 
 public class PlayerController : MonoBehaviour
 {
+    public event Action PlayerDied;
+
+    [SerializeField] private GameObject _playerDiedFxPrefab;
     [SerializeField] private float _jumpForce;
     [SerializeField] private int _maxJumpCount = 2;
     [SerializeField] private AudioSource _moveAudio;
@@ -70,6 +73,8 @@ public class PlayerController : MonoBehaviour
 
     public void DestroyPlayer()
     {
+        Instantiate(_playerDiedFxPrefab, transform.position, Quaternion.identity);
+        PlayerDied?.Invoke();
         Destroy(gameObject);
     }
 }

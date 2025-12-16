@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PointController : MonoBehaviour
 {
@@ -10,7 +11,23 @@ public class PointController : MonoBehaviour
     [SerializeField] private float _pointPositionY;
     [SerializeField] private int _rewardPerPoint = 1;
 
+    private float _destroyPointDuration = 0.3f;
     private readonly List<Point> _points = new List<Point>();
+
+    public void DestroAllPoints()
+    {
+        foreach (var point in _points)
+        {
+            point.PointCollected -= OnPointCollected;
+
+            point.transform
+                .DOScaleX(0f, _destroyPointDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => Destroy(point.gameObject));
+        }
+        
+        _points.Clear();
+    }
 
     public void SpawnPoint(Vector3 position)
     {

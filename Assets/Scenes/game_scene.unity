@@ -182,6 +182,8 @@ MonoBehaviour:
   _pointSpawnProbability: 0.7
   _pointController: {fileID: 1256719060}
   _obstacleController: {fileID: 1758993918}
+  _player: {fileID: 744173961}
+  _levelMover: {fileID: 995533834}
 --- !u!4 &194385357
 Transform:
   m_ObjectHideFlags: 0
@@ -683,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3f554283b5d364994a54b08f3aef3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerDiedFxPrefab: {fileID: 668977754387144315, guid: d8214c2bcf275ef4f97ae1e9d4d88e06, type: 3}
   _jumpForce: 6
   _maxJumpCount: 2
   _moveAudio: {fileID: 744173963}
@@ -1170,6 +1173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _obstaclePrefab: {fileID: 923805175194662746, guid: a8700e84460e89743be708bf122ada55, type: 3}
+  _destroyObstacleDuration: 0.3
   _minDistanceBetweenObstaclesX: 5
   _maxDistanceBetweenObstaclesX: 9
   _minObstacleHeight: 1.2
