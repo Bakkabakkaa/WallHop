@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelMover _levelMover;
     [SerializeField] private ScoreController _scoreController;
     [SerializeField] private ScoreView _scoreView;
+    [SerializeField] private BackgroundColorController _backgroundColorController;
+    [SerializeField] private int _difficultyIncreasePeriodInPoints = 10;
+    [Tooltip("Points required to change background color")] [SerializeField]
+    private int _colorChangePeriodInPoints = 5;
 
     private void Awake()
     {
@@ -18,6 +22,7 @@ public class GameManager : MonoBehaviour
         _pointController.RewardAdded += _scoreController.AddScore;
         _player.PlayerDied += OnPlayerDied;
         _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
+        _scoreController.ScoreChanged += OnScoreChanged;
     }
 
     private void OnDestroy()
@@ -26,6 +31,7 @@ public class GameManager : MonoBehaviour
         _pointController.RewardAdded -= _scoreController.AddScore;
         _player.PlayerDied -= OnPlayerDied;
         _scoreController.ScoreChanged -= _scoreView.UpdateScoreLabel;
+        _scoreController.ScoreChanged -= OnScoreChanged;
     }
 
     private void OnObstacleChangePosition(Vector3 position)
@@ -42,6 +48,21 @@ public class GameManager : MonoBehaviour
         _levelMover.enabled = false;
         _obstacleController.DestroyObstacles();
         _pointController.DestroAllPoints();
+    }
+
+    private void OnScoreChanged(int score)
+    {
+        _scoreView.UpdateScoreLabel(score);
+
+        if (score % _colorChangePeriodInPoints == 0)
+        {
+            _backgroundColorController.ChangeColor();
+        }
+
+        if (score % _difficultyIncreasePeriodInPoints == 0)
+        {
+            _levelMover.IncreaseSpeed();
+        }
     }
 }
 

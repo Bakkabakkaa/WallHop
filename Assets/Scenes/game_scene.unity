@@ -186,6 +186,9 @@ MonoBehaviour:
   _levelMover: {fileID: 995533834}
   _scoreController: {fileID: 910835276}
   _scoreView: {fileID: 2038086964}
+  _backgroundColorController: {fileID: 313630847}
+  _difficultyIncreasePeriodInPoints: 10
+  _colorChangePeriodInPoints: 5
 --- !u!4 &194385357
 Transform:
   m_ObjectHideFlags: 0
@@ -211,6 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 313630846}
   - component: {fileID: 313630845}
+  - component: {fileID: 313630847}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -288,6 +292,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &313630847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313630844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a0fef6602142c49cdc0a5179a50f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colorProvider: {fileID: 11400000, guid: adfc853e6a9a59c4b9ffd5dbcca804a0, type: 2}
+  _colorChangeDuration: 0.2
 --- !u!1 &372300719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _floorSpeed: 3
+  _speedIncreaseDelta: 0.15
 --- !u!4 &995533835
 Transform:
   m_ObjectHideFlags: 0
