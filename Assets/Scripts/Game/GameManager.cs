@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private BackgroundColorController _backgroundColorController;
     [SerializeField] private int _difficultyIncreasePeriodInPoints = 10;
+    [SerializeField] private float _sceneChangeDelay = 1f;
     [Tooltip("Points required to change background color")] [SerializeField]
     private int _colorChangePeriodInPoints = 5;
 
@@ -48,6 +51,8 @@ public class GameManager : MonoBehaviour
         _levelMover.enabled = false;
         _obstacleController.DestroyObstacles();
         _pointController.DestroAllPoints();
+
+        StartCoroutine(LoadGameOverSceneWithDelay());
     }
 
     private void OnScoreChanged(int score)
@@ -63,6 +68,12 @@ public class GameManager : MonoBehaviour
         {
             _levelMover.IncreaseSpeed();
         }
+    }
+
+    private IEnumerator LoadGameOverSceneWithDelay()
+    {
+        yield return new WaitForSeconds(_sceneChangeDelay);
+        SceneManager.LoadSceneAsync(GlobalConstants.GAME_OVER_SCENE);
     }
 }
 
